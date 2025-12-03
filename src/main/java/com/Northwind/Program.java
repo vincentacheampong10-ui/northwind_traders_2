@@ -21,7 +21,9 @@ public class Program {
 
         CustomerDao customerDao = new CustomerDao(dataSource);
         List<Customer> customers = customerDao.getAll();
-        System.out.println(customers);
+       // System.out.println(customers);
+
+        System.out.println(customerDao.find("WOLZA"));
 
 
     }
