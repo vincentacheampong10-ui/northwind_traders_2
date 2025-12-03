@@ -3,8 +3,6 @@ package com.Northwind;
 import com.Northwind.data.CustomerDao;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import javax.sql.DataSource;
-
 public class Program {
     public static void main(String[] args) {
 
