@@ -57,7 +57,42 @@ public class CustomerDao {
 
     }
 
-    public Customer find(int customerId) {
-        return null;
+    public Customer find(String customerId) {
+        Customer customer = null;
+        String query = """
+                SELECT *
+                FROM customers
+                WHERE CustomerID like ?;
+                """;
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, customerId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+
+                     customer = new Customer(
+                            resultSet.getString("CustomerID"),
+                            resultSet.getString("CompanyName"),
+                            resultSet.getString("ContactName"),
+                            resultSet.getString("ContactTitle"),
+                            resultSet.getString("Address"),
+                            resultSet.getString("City"),
+                            resultSet.getString("Region"),
+                            resultSet.getString("PostalCode"),
+                            resultSet.getString("Country"),
+                            resultSet.getString("Phone"),
+                            resultSet.getString("Fax"));
+
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return customer;
     }
 }
