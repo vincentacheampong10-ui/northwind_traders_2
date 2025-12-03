@@ -11,7 +11,7 @@ public class Program {
         String username = args[0];
         String password = args[1];
 
-     BasicDataSource dataSource = new BasicDataSource();
+        BasicDataSource dataSource = new BasicDataSource();
 
         dataSource.setUrl(url);
         dataSource.setUsername(username);
