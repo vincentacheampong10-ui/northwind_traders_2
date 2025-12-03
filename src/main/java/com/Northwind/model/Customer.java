@@ -115,7 +115,6 @@ public class Customer {
         this.fax = fax;
     }
 
-
     @Override
     public String toString() {
         return "Customer{" +
