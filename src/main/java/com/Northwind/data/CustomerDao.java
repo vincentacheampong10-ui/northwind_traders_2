@@ -7,7 +7,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Calendar.PM;
 
 public class CustomerDao {
     private DataSource dataSource;
@@ -26,9 +25,6 @@ public class CustomerDao {
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
-
-         //   String searchTerm = "%AIR%";
-           // statement.setString(1, searchTerm);
 
             try (ResultSet resultSet = statement.executeQuery()) {
 
@@ -59,5 +55,9 @@ public class CustomerDao {
 
         return customers;
 
+    }
+
+    public Customer find(int customerId) {
+        return null;
     }
 }
