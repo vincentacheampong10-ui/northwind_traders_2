@@ -1,49 +1,62 @@
 package com.Northwind.data;
 
+import com.Northwind.model.Customer;
+import com.Northwind.model.Supplier;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.function.Supplier;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class SupplierDao {
-    public Supplier find(int SupplierID){
-        Supplier supplier = null;
+    private DataSource dataSource;
+
+    public SupplierDao(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public List<Supplier> getAll() {
+        List<Supplier> suppliers = new ArrayList<>();
+
         String query = """
-                SELECT *
-                FROM products
-                WHERE SupplierID = 1;
+                 SELECT productID, productName, supplierID,categoryID, quantityPerUnit, unitPrice, unitsInStock, unitsOnOrder, reorderLevel, discontinued
+                FROM Products;
                 """;
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setInt(1, SupplierID);
-
             try (ResultSet resultSet = statement.executeQuery()) {
 
                 while (resultSet.next()) {
 
-                    supplier = new Supplier(
-                            resultSet.getString("CustomerID"),
-                            resultSet.getString("CompanyName"),
-                            resultSet.getString("ContactName"),
-                            resultSet.getString("ContactTitle"),
-                            resultSet.getString("Address"),
-                            resultSet.getString("City"),
-                            resultSet.getString("Region"),
-                            resultSet.getString("PostalCode"),
-                            resultSet.getString("Country"),
-                            resultSet.getString("Phone"),
-                            resultSet.getString("Fax"));
+                    Supplier supplier = new Supplier(
+                            resultSet.getString("productID"),
+                            resultSet.getString("productName"),
+                            resultSet.getInt("supplierID"),
+                            resultSet.getInt("categoryID"),
+                            resultSet.getString("quantityPerUnit"),
+                            resultSet.getDouble("unitPrice"),
+                            resultSet.getInt("unitsInStock"),
+                            resultSet.getInt("unitsOnOrder"),
+                            resultSet.getInt("reorderLevel"),
+                            resultSet.getBoolean("discontinued"));
 
+                    suppliers.add(supplier);
 
                 }
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("There was an error retrieving the data. Please try again.");
+            e.printStackTrace();
         }
-        return supplier;
+
+        return suppliers;
+
     }
 }
